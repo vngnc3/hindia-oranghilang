@@ -16,7 +16,12 @@ const ageString = document.querySelector("#ageString");
 const epochMs = 6000; // the rate of update. epoch must be greater than 1 second.
 
 // ██ seed variable ███████████████████████████
-let seed = 0; // seed variable will be updated by prng at each epoch.
+let bufferedSeeds = [];
+
+// Continuously update the seed every second
+setInterval(() => {
+    bufferedSeeds.push(prngByTime());
+}, 1000); // This is every second
 
 // ██ update selected element in DOM ██████████
 function updateElement(target, string) {
@@ -24,15 +29,15 @@ function updateElement(target, string) {
 }
 
 // ██ main functions ██████████████████████████
+// Use the buffered seeds for the updateName function
 function updateName() {
-  // Update the seed variable with prngByTime
-  seed = prngByTime();
-  
-  // Randomly pick the name based on seed
-  const selFirstName = firstName[seed % firstName.length];
-  const selLastName = lastName[seed % lastName.length];
-  updateElement(numberPlaceholder, seed);
-  updateElement(nameString, `${selFirstName} ${selLastName}`);
+  if (bufferedSeeds.length > 0) {
+      seed = bufferedSeeds.shift();
+      const selFirstName = firstName[seed % firstName.length];
+      const selLastName = lastName[seed % lastName.length];
+      updateElement(numberPlaceholder, seed);
+      updateElement(nameString, `${selFirstName} ${selLastName}`);
+  }
 }
 
 // Calculate the time since the last epoch
@@ -49,7 +54,7 @@ function timeToNextEpoch(epoch) {
 // Start the first update at the epoch mark and then repeat every epochMs
 setTimeout(() => {
   updateName(); // First call at the epoch mark
-  
+
   // Then update every epochMs
   setInterval(updateName, epochMs);
 }, timeToNextEpoch(epochMs));
