@@ -24,6 +24,7 @@ body {
 }
 
 .photoContainer {
+    display: grid;
     border: 2px black solid;
     background-color: grey;
     width: 420px;
@@ -31,6 +32,12 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 4rem;
+}
+
+.photoContainer img {
+    width: 100%;
+    height: auto;
+    filter: saturate(0) contrast(1.8);
 }
 
 .subheading {
@@ -42,4 +49,24 @@ body {
     font-size: 2rem;
     font-weight: 800;
     text-transform: uppercase;
+}
+
+.loadingContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: whitesmoke;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: all ease-in-out 1000ms;
+}
+
+.loadingContainer img {
+    /* border: 1px solid red; */
+    width: 64px;
+    height: auto;
 }

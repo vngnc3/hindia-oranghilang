@@ -8,9 +8,12 @@
 // available fn: getPerson(seed)
 
 // ██ list all html elements ██████████████████
+const body = document.querySelector("body");
 const numberPlaceholder = document.querySelector("#numberPlaceholder");
+const imageSrc = document.querySelector("#image");
 const nameString = document.querySelector("#name");
 const ageString = document.querySelector("#ageString");
+const loadingContainer = document.querySelector(".loadingContainer");
 
 // ██ seed variable ███████████████████████████
 let bufferedSeeds = 0;
@@ -21,17 +24,17 @@ let bufferedSeeds = 0;
 // epoch must be greater than 1 second.
 // epoch must be a factor of 60,
 // so it'd loop by the minute-mark.
-const epochMs = 4000;
+const epochMs = 2000;
 
 // Calculate the time since the last epoch
 function timeSinceLastEpoch() {
-    const now = new Date();
-    return now.getTime() % epochMs;
+  const now = new Date();
+  return now.getTime() % epochMs;
 }
 
 // Calculate the time until the next epoch
 function timeToNextEpoch() {
-    return epochMs - timeSinceLastEpoch(epochMs);
+  return epochMs - timeSinceLastEpoch(epochMs);
 }
 
 // ██ looping quantized handler function ██████
@@ -68,23 +71,48 @@ function executeNowAndAtNextQuantizedEpoch(callback) {
 
 // ██ main functions ██████████████████████████
 function updateSeed() {
-    bufferedSeeds = prngByTime();
+  bufferedSeeds = prngByTime();
 }
 
 function updateElement(target, string) {
-    target.textContent = string;
+  target.textContent = string;
+}
+
+function updateImage(url) {
+  imageSrc.src = url;
+}
+
+function unmountLoader() {
+  const transitionMs = 200;
+  loadingContainer.style = `opacity: 0; transition: all ease-in-out ${transitionMs}ms;`;
+  setTimeout(() => {
+    body.removeChild(loadingContainer);
+  }, transitionMs);
 }
 
 // ██ executions ██████████████████████████████
 // Continuously update the seed every second,
 // starting from the next second-mark.
 
-executeAtQuantizedEpoch(() => {
-    updateSeed();
-    const person = getPerson(bufferedSeeds);
-    const personName = person.firstName + ' ' + person.lastName;
-    const personAge = person.age;
-    updateElement(numberPlaceholder, bufferedSeeds);
-    updateElement(nameString, personName);
-    updateElement(ageString, personAge);
-})
+// executeAtQuantizedEpoch(() => {
+//     updateSeed();
+//     const person = getPerson(bufferedSeeds);
+//     const personName = person.firstName + ' ' + person.lastName;
+//     const personAge = person.age;
+//     updateElement(numberPlaceholder, bufferedSeeds);
+//     updateImage(person.imageUrl);
+//     updateElement(nameString, personName);
+//     updateElement(ageString, personAge);
+// })
+
+executeOnceAtQuantizedEpoch(() => {
+  updateSeed();
+  const person = getPerson(bufferedSeeds);
+  const personName = person.firstName + " " + person.lastName;
+  const personAge = person.age;
+  updateElement(numberPlaceholder, bufferedSeeds);
+  updateImage(person.imageUrl);
+  updateElement(nameString, personName);
+  updateElement(ageString, personAge);
+  setTimeout(unmountLoader(), epochMs/2);
+});
