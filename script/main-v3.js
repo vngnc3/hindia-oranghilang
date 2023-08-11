@@ -24,7 +24,7 @@ let bufferedSeeds = 0;
 // epoch must be greater than 1 second.
 // epoch must be a factor of 60,
 // so it'd loop by the minute-mark.
-const epochMs = 2000;
+const epochMs = 3000;
 
 // Calculate the time since the last epoch
 function timeSinceLastEpoch() {
@@ -83,7 +83,7 @@ function updateImage(url) {
 }
 
 function unmountLoader() {
-  const transitionMs = 200;
+  const transitionMs = 500;
   loadingContainer.style = `opacity: 0; transition: all ease-in-out ${transitionMs}ms;`;
   setTimeout(() => {
     body.removeChild(loadingContainer);
@@ -91,20 +91,6 @@ function unmountLoader() {
 }
 
 // ██ executions ██████████████████████████████
-// Continuously update the seed every second,
-// starting from the next second-mark.
-
-// executeAtQuantizedEpoch(() => {
-//     updateSeed();
-//     const person = getPerson(bufferedSeeds);
-//     const personName = person.firstName + ' ' + person.lastName;
-//     const personAge = person.age;
-//     updateElement(numberPlaceholder, bufferedSeeds);
-//     updateImage(person.imageUrl);
-//     updateElement(nameString, personName);
-//     updateElement(ageString, personAge);
-// })
-
 executeOnceAtQuantizedEpoch(() => {
   updateSeed();
   const person = getPerson(bufferedSeeds);
@@ -116,3 +102,15 @@ executeOnceAtQuantizedEpoch(() => {
   updateElement(ageString, personAge);
   setTimeout(unmountLoader(), epochMs/2);
 });
+
+// OPTIONAL: update at every epoch instead of once.
+// executeAtQuantizedEpoch(() => {
+//     updateSeed();
+//     const person = getPerson(bufferedSeeds);
+//     const personName = person.firstName + ' ' + person.lastName;
+//     const personAge = person.age;
+//     updateElement(numberPlaceholder, bufferedSeeds);
+//     updateImage(person.imageUrl);
+//     updateElement(nameString, personName);
+//     updateElement(ageString, personAge);
+// })
