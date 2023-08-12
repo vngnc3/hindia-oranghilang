@@ -16,13 +16,12 @@ body {
   /* border: 1px solid red; */
   display: flex;
   width: 100vw;
-  height: 99vh;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
   gap: 1rem;
-  padding-top: 3rem;
-  padding-bottom: 8rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
 .heading {
@@ -102,7 +101,7 @@ body {
 }
 
 .loadingContainer {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   width: 100vw;

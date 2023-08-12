@@ -80,6 +80,7 @@ function updateElement(target, string) {
 
 function updateImage(url) {
   imageSrc.src = url;
+  imageSrc.onload = setTimeout(unmountLoader(), epochMs/2);
 }
 
 function unmountLoader() {
@@ -100,7 +101,6 @@ executeOnceAtQuantizedEpoch(() => {
   updateImage(person.imageUrl);
   updateElement(nameString, personName);
   updateElement(ageString, personAge);
-  setTimeout(unmountLoader(), epochMs/2);
 });
 
 // OPTIONAL: update at every epoch instead of once.

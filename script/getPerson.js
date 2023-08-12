@@ -66,10 +66,9 @@ function getImageUrl(seed, gender) {
 }
 
 function getPermutations() {
-  const agePerm = ageRange[1] - ageRange[0];
   const perm =
-    firstNamesM.length * lastNamesM.length * malePhotoCount * agePerm +
-    firstNamesF.length * lastNamesF.length * femalePhotoCount * agePerm;
+    firstNamesM.length * lastNamesM.length * malePhotoCount +
+    firstNamesF.length * lastNamesF.length * femalePhotoCount;
   return perm;
 }
 
