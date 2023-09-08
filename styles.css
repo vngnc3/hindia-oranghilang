@@ -77,6 +77,10 @@ body {
   color: inherit;
 }
 
+.link { 
+  font-weight: bold;
+}
+
 .lhabContainer {
     display: flex;
     justify-content: center;
